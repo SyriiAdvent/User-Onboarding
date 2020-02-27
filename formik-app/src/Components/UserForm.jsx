@@ -19,7 +19,7 @@ const UserForm = () => {
   return (
     <div className={classes.root}>
       <Formik
-        initialValues={{ fName: '', lName: '' }}
+        initialValues={{ fName: '', lName: '', email: '', password: '' }}
         onSubmit={(data, {setSubmitting, resetForm}) => {
           setSubmitting(true)
           // ^ Makes the Async Call for Data
@@ -28,29 +28,38 @@ const UserForm = () => {
           resetForm()
         }}
       >
-        {({ values, handleChange, isSubmitting, handleSubmit, handleBlur, resetForm }) => (
-          <Form onSubmit={handleSubmit} autoComplete='off' >
-            <Field as={TextField} 
-              className={classes.inputBox}
-              id='fName'
+        {/* {({ values, handleChange, isSubmitting, handleSubmit, handleBlur, resetForm }) => ( <-- Formik will auto use these in Form-Fields under the hood like a boss!!!  */}
+        {({ values, isSubmitting }) => (
+          <Form autoComplete='off'>
+            <Field 
               name='fName'
-              label='First Name' 
-              value={values.fName}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            <Field as={TextField} 
+              label='First Name'
+              as={TextField} 
               className={classes.inputBox}
-              id='lName'
+            />
+            <Field 
               name='lName'
               label='Last Name' 
-              value={values.lName}
-              onChange={handleChange}
-              onBlur={handleBlur}
+              as={TextField} 
+              className={classes.inputBox}
             />
             <br/>
-            <Button type='submit' disabled={isSubmitting} >Submit</Button>
-
+            <Field 
+              name='email'
+              label='Email' 
+              as={TextField} 
+              className={classes.inputBox}
+            />
+            <Field 
+              name='password'
+              label='Password' 
+              type='password'
+              as={TextField} 
+              className={classes.inputBox}
+            />
+            <div>
+              <Button type='submit' disabled={isSubmitting}>Submit</Button>
+            </div>
             <hr />
             <pre>{JSON.stringify(values, null, 2)}</pre>
           </Form>
@@ -62,22 +71,21 @@ const UserForm = () => {
 
 export default UserForm;
 
-
-{/* <label htmlFor="name">
-              Name {""}
-              <Field component={TextField} label='First Name' name="fName" id="fName" placeholder="First Name" />
-              <Field name="lName" id="lName" placeholder="Last Name" />
-            </label>{" "}
-            <br />
-            <label htmlFor="email">
-              Email <Field name="email" />
-            </label>{" "}
-            <br />
-            <label htmlFor="password">
-              Password <Field name="password" />
-            </label>{" "}
-            <br />
-            <label htmlFor="tos">
-              Terms of Service <Field type="checkbox" name="tos" />
-            </label>
-            <TextField  /> */}
+{/* <Field as={TextField} 
+  className={classes.inputBox}
+  id='fName'
+  name='fName'
+  label='First Name' 
+  value={values.fName}
+  onChange={handleChange}
+  onBlur={handleBlur}
+/>
+<Field as={TextField} 
+  className={classes.inputBox}
+  id='lName'
+  name='lName'
+  label='Last Name' 
+  value={values.lName}
+  onChange={handleChange}
+  onBlur={handleBlur}
+/> */}
