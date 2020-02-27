@@ -3,6 +3,8 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from "@material-ui/core";
+import Checkbox, { CheckBox } from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +21,7 @@ const UserForm = () => {
   return (
     <div className={classes.root}>
       <Formik
-        initialValues={{ fName: '', lName: '', email: '', password: '' }}
+        initialValues={{ fName: '', lName: '', email: '', password: '', tos: false }}
         onSubmit={(data, {setSubmitting, resetForm}) => {
           setSubmitting(true)
           // ^ Makes the Async Call for Data
@@ -58,6 +60,17 @@ const UserForm = () => {
               className={classes.inputBox}
             />
             <div>
+              <FormControlLabel control={
+                <Field
+                name='tos'
+                type='checkbox'
+                as={Checkbox}
+                color='primary'
+                />
+                // <Checkbox color='primary' />
+              }
+                label='Terms of Service'
+              />
               <Button type='submit' disabled={isSubmitting}>Submit</Button>
             </div>
             <hr />
