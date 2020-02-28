@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios'
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,6 +16,26 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+const validateUser = Yup.object().shape({
+  fName: Yup.string("")
+    .min(3, 'Too short!')
+    .max(12, 'Your name isnt this long!')
+    .required('Required'),
+  lName: Yup.string()
+    .min(2, 'Too short!')
+    .max(20, 'Your last name isnt this long!')
+    .required('Required'),
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Required'),
+  password: Yup.string()
+    .min(8, 'Must be 8-32 characters long.')
+    .max(32, '32 characters maximium')
+    .required('Required'),
+  tos: Yup.boolean()
+    .required(),
+})
+
 const UserForm = () => {
   const classes = useStyles();
 
@@ -22,6 +43,7 @@ const UserForm = () => {
     <div className={classes.root}>
       <Formik
         initialValues={{ fName: '', lName: '', email: '', password: '', tos: false }}
+        validationSchema={validateUser}
         onSubmit={(data, {setSubmitting, resetForm}) => {
           setSubmitting(true)
           // ^ Makes the Async Call for Data
@@ -31,19 +53,24 @@ const UserForm = () => {
         }}
       >
         {/* {({ values, handleChange, isSubmitting, handleSubmit, handleBlur, resetForm }) => ( <-- Formik will auto use these in Form-Fields under the hood like a boss!!!  */}
-        {({ values, isSubmitting }) => (
+        {({ values, isSubmitting, errors, touched }) => (
           <Form autoComplete='off'>
             <Field 
               name='fName'
               label='First Name'
               as={TextField} 
               className={classes.inputBox}
+              error={errors.fName && touched.fName ? errors.fName : null }
+              helperText={errors.fName}
             />
+            
             <Field 
               name='lName'
               label='Last Name' 
               as={TextField} 
               className={classes.inputBox}
+              error={errors.lName && touched.lName ? errors.lName : null }
+              helperText={errors.lName}
             />
             <br/>
             <Field 
@@ -51,6 +78,8 @@ const UserForm = () => {
               label='Email' 
               as={TextField} 
               className={classes.inputBox}
+              error={errors.email && touched.email ? errors.email : null }
+              helperText={errors.email}
             />
             <Field 
               name='password'
@@ -58,6 +87,8 @@ const UserForm = () => {
               type='password'
               as={TextField} 
               className={classes.inputBox}
+              error={errors.password && touched.password ? errors.password : null }
+              helperText={errors.password}
             />
             <div>
               <FormControlLabel control={
@@ -83,22 +114,3 @@ const UserForm = () => {
 };
 
 export default UserForm;
-
-{/* <Field as={TextField} 
-  className={classes.inputBox}
-  id='fName'
-  name='fName'
-  label='First Name' 
-  value={values.fName}
-  onChange={handleChange}
-  onBlur={handleBlur}
-/>
-<Field as={TextField} 
-  className={classes.inputBox}
-  id='lName'
-  name='lName'
-  label='Last Name' 
-  value={values.lName}
-  onChange={handleChange}
-  onBlur={handleBlur}
-/> */}
