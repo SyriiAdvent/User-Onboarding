@@ -7,6 +7,8 @@ import { TextField, Button } from "@material-ui/core";
 import Checkbox, { CheckBox } from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+import UserCards from './UserCard'
+
 const useStyles = makeStyles(theme => ({
   root: {
     margin: '1rem',
@@ -122,7 +124,7 @@ const UserForm = () => {
         )}
       </Formik>
       <div>
-            {users.map(ele => <h3>{ele.fName}</h3>)}
+            {users.map(ele => <UserCards data={ele} /> )}
       </div>
     </div>
   );
