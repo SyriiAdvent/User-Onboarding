@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from 'axios'
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -38,6 +38,12 @@ const validateUser = Yup.object().shape({
 
 const UserForm = () => {
   const classes = useStyles();
+  const [users, setUsers] = useState([])
+
+  // useEffect(() => {
+  //   console.log(`Status has changed!`, status)
+  //   status && setUsers([...users, status])
+  // }, [input])
 
   return (
     <div className={classes.root}>
@@ -45,7 +51,13 @@ const UserForm = () => {
         initialValues={{ fName: '', lName: '', email: '', password: '', tos: false }}
         validationSchema={validateUser}
         onSubmit={(data, {setSubmitting, resetForm}) => {
-          setSubmitting(true)
+          axios.post('https://reqres.in/api/users', data)
+            .then(response => {
+              setSubmitting(true)
+              setUsers(users => [...users, data])
+              console.log(`Successfully posted form data to server: `, response)
+            })
+            .catch(error => console.error(`Couldn't send form data: `, error))
           // ^ Makes the Async Call for Data
           console.log('Submitted data: ', data);
           setSubmitting(false)
@@ -105,12 +117,24 @@ const UserForm = () => {
               <Button type='submit' disabled={isSubmitting}>Submit</Button>
             </div>
             <hr />
-            <pre>{JSON.stringify(values, null, 2)}</pre>
+            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
           </Form>
         )}
       </Formik>
+      <div>
+            {users.map(ele => <h3>{ele.fName}</h3>)}
+      </div>
     </div>
   );
 };
 
 export default UserForm;
+
+
+// onSubmit={(data, {setSubmitting, resetForm}) => {
+//   setSubmitting(true)
+//   // ^ Makes the Async Call for Data
+//   console.log('Submitted data: ', data);
+//   setSubmitting(false)
+//   resetForm()
+// }}
