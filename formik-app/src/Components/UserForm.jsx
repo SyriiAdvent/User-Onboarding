@@ -12,9 +12,20 @@ import UserCards from './UserCard'
 const useStyles = makeStyles(theme => ({
   root: {
     margin: '1rem',
+    border: 'solid'
   },
   inputBox: {
     margin: '1rem',
+  },
+  submit: {
+    width: '100%',
+    display: 'flex',
+    // flexDirection: 'space-between'
+    marginLeft: '1rem',
+
+  },
+  btn: {
+    marginLeft: '10rem',
   }
 }))
 
@@ -104,7 +115,7 @@ const UserForm = () => {
               error={errors.password && touched.password ? errors.password : null }
               helperText={errors.password}
             />
-            <div>
+            <div className={classes.submit}>
               <FormControlLabel control={
                 <Field
                 name='tos'
@@ -116,9 +127,8 @@ const UserForm = () => {
               }
                 label='Terms of Service'
               />
-              <Button type='submit' disabled={isSubmitting}>Submit</Button>
+              <Field className={classes.btn} type='submit' disabled={isSubmitting} as={Button} >Submit</Field>
             </div>
-            <hr />
             {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
           </Form>
         )}
